@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import * as mongo from "mongodb";
 import * as dbService from './services/db.mjs';
 import { auth } from 'express-oauth2-jwt-bearer';
 
@@ -36,6 +37,19 @@ app.get('/players/:id', (req, res) => {
 // POST player
 app.post('/players', (req, res) => {
   dbService.addOne('players', req.body).then(player => {
+    res.send(player.insertedId);
+  });
+});
+
+// PUT player
+app.put('/players/skills', (req, res) => {
+  const player = req.body;
+  console.log('player: ', req.body);
+  const query = {_id: new mongo.ObjectId(player._id)};
+  const newValues = { $set: {
+    skills: player.skills
+  }};
+  dbService.updateOne('players', query, newValues).then(player => {
     res.send(player.insertedId);
   });
 });
