@@ -111,11 +111,7 @@ export async function deleteOne(collectionName, id) {
     // Access the database and collection
     const database = client.db(dbName);
     const collection = database.collection(collectionName);
-    const result = await collection.deleteOne({_id: id});
-
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ error: 'Player not found' });
-    }
+    const result = await collection.deleteOne({_id: new mongo.ObjectId(id)});
 
     return result;
   } finally {

@@ -63,7 +63,7 @@ app.post('/players', (req, res) => {
 
 // DELETE player
 app.delete('/players/:id', (req, res) => {
-  dbService.delete
+  dbService.deleteOne('players', req.params.id);
 });
 
 // GET all divisions
@@ -79,7 +79,7 @@ app.get('/divisions/:id', (req, res) => {
     if (!division) {
       return res.status(404).json({ error: 'Division not found' });
     }
-    res.json(player);
+    res.json(division);
   });
 });
 
@@ -93,6 +93,13 @@ app.post('/divisions', (req, res) => {
 // POST list of divisions
 app.post('/divisions', (req, res) => {
   dbService.addMany('divisions', req.body).then(result => {
+    res.send(result);
+  });
+});
+
+// DELETE a division
+app.delete('/divisions/:id', (req, res) => {
+  dbService.deleteOne('divisions', req.params.id).then(result => {
     res.send(result);
   });
 });
