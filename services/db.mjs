@@ -114,6 +114,8 @@ export async function deleteOne(collectionName, id) {
     const result = await collection.deleteOne({_id: new mongo.ObjectId(id)});
 
     return result;
+  } catch (err) {
+    console.log('error: ', err);
   } finally {
     // Close the MongoDB connection
     await client.close();

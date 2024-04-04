@@ -104,6 +104,45 @@ app.delete('/divisions/:id', (req, res) => {
   });
 });
 
+// GET sessions
+app.get('/sessions', (req, res) => {
+  dbService.getAll('sessions').then(result => {
+    res.send(result);
+  });
+});
+
+// GET session by _id
+app.get('/sessions/:id', (req, res) => {
+  dbService.getOne('sessions', req.params.id).then(session => {
+    if (!session) {
+      return res.status(404).json({ error: 'Session not found' });
+    }
+    res.json(session);
+  });
+});
+
+// POST session
+app.post('/sessions', (req, res) => {
+  console.log('adding session: ', req.body);
+  dbService.addOne('sessions', req.body).then(session => {
+    res.send(session.insertedId);
+  });
+});
+
+/// UPDATE session
+app.put('/sessions', (req, res) => {
+  console.log('update session: ', req.body);
+  dbService.updateOne('sessions', req.body).then(session => {
+    res.send(session.insertedId);
+  });
+});
+
+// DELETE session
+app.delete('/sessions/:id', (req, res) => {
+  console.log('req: ', req.params);
+  dbService.deleteOne('sessions', req.params.id);
+});
+
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
